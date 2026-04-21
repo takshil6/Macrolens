@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Pulse — Apple-style</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&amp;display=swap');
+
+        :root {
+            --apple-blue: #0071e3;
+            --apple-gray: #f5f5f7;
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: #f5f5f7;
+            color: var(--text-primary);
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        /* Apple-style Header */
+        .header {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #d2d2d7;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0 2rem;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 22px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: #0071e3;
+            border-radius: 50%;
+        }
+
+        .nav-title {
+            font-size: 21px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #0071e3;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #0071e3;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            font-size: 24px;
+            color: #6e6e73;
+            font-weight: 400;
+        }
+
+        /* Metrics Cards – Apple style */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .metric-label {
+            font-size: 15px;
+            color: #6e6e73;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .metric-value {
+            font-size: 42px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            color: #1d1d1f;
+        }
+
+        .metric-delta {
+            font-size: 15px;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .delta-up { color: #00b36b; }
+        .delta-down { color: #ff3b30; }
+
+        /* Section Title */
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+        }
+
+        /* Tab Bar */
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 9999px;
+            padding: 6px;
+            width: fit-content;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            padding: 12px 32px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 17px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: #0071e3;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,113,227,0.3);
+        }
+
+        /* Content Area */
+        .content-area {
+            display: grid;
+            grid-template-columns: 2.2fr 1fr;
+            gap: 40px;
+        }
+
+        .visual-panel {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+
+        .chart-container {
+            height: 460px;
+        }
+
+        /* Right Sidebar – AI Chat */
+        .ai-panel {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .ai-header h3 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .chat-window {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+            margin-bottom: 24px;
+        }
+
+        .chat-msg {
+            margin-bottom: 20px;
+            max-width: 85%;
+        }
+
+        .chat-user {
+            background: #0071e3;
+            color: white;
+            border-radius: 20px 20px 4px 20px;
+            padding: 14px 20px;
+            margin-left: auto;
+            font-size: 16px;
+        }
+
+        .chat-ai {
+            background: #f2f2f7;
+            color: #1d1d1f;
+            border-radius: 20px 20px 20px 4px;
+            padding: 14px 20px;
+            font-size: 16px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 18px 24px;
+            border: 1.5px solid #d2d2d7;
+            border-radius: 9999px;
+            font-size: 17px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .chat-input input:focus {
+            border-color: #0071e3;
+        }
+
+        .chat-input button {
+            background: #0071e3;
+            color: white;
+            border: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Footer note */
+        .footer-note {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 14px;
+            color: #6e6e73;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Apple-style Header -->
+    <div class="header">
+        <div class="logo">
+            <span>Pulse</span>
+            <span class="logo-dot"></span>
+        </div>
+        <div class="nav-title">Economic Indicators</div>
+        <div class="status">
+            <span class="status-dot"></span>
+            LIVE • Snowflake • 2024
+        </div>
+    </div>
+
+    <div class="main">
+
+        <!-- Hero -->
+        <div class="hero">
+            <h1>US Economic Pulse</h1>
+            <p>Real-time macro data. Beautifully designed. Powered by Groq + Snowflake.</p>
+        </div>
+
+        <!-- Metrics -->
+        <div class="metrics">
+            <div class="metric-card">
+                <div class="metric-label">GDP (Latest)</div>
+                <div class="metric-value">$28.3T</div>
+                <div class="metric-delta delta-up">↑ 2.3% YoY</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Unemployment Rate</div>
+                <div class="metric-value">4.1%</div>
+                <div class="metric-delta delta-up">↓ 0.2 pts</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Inflation (CPI)</div>
+                <div class="metric-value">2.8</div>
+                <div class="metric-delta delta-down">↑ 0.1 pts</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Fed Funds Rate</div>
+                <div class="metric-value">4.75%</div>
+                <div class="metric-delta">Held steady</div>
+            </div>
+        </div>
+
+        <div class="content-area">
+
+            <!-- Left Visual Area -->
+            <div>
+                <div class="visual-panel">
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab(0)" id="tab0">Trends</div>
+                        <div class="tab" onclick="switchTab(1)" id="tab1">US Map</div>
+                    </div>
+
+                    <!-- Trends Tab -->
+                    <div id="panel-trends">
+                        <h3 class="section-title" id="chart-title">Unemployment Rate • 2015–2024</h3>
+                        <div class="chart-container" id="main-chart"></div>
+                    </div>
+
+                    <!-- Map Tab -->
+                    <div id="panel-map" style="display: none;">
+                        <h3 class="section-title">Unemployment Rate by State • 2024</h3>
+                        <div class="chart-container" id="choropleth-map" style="height: 460px;"></div>
+                    </div>
+
+                    <!-- Indicator Selector -->
+                    <div style="margin-top: 20px; display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 15px; color: #6e6e73; font-weight: 500;">Indicator:</span>
+                        <select id="indicator-select" onchange="updateChart()" style="padding: 10px 20px; border-radius: 9999px; border: 1px solid #d2d2d7; font-size: 16px; background: white; outline: none;">
+                            <option value="unemployment">Unemployment Rate</option>
+                            <option value="gdp">GDP (Billions USD)</option>
+                            <option value="inflation_cpi">Inflation (CPI)</option>
+                            <option value="federal_funds_rate">Fed Funds Rate</option>
+                            <option value="housing_starts">Housing Starts</option>
+                            <option value="avg_hourly_wage">Average Hourly Wage</option>
+                            <option value="nonfarm_payroll">Nonfarm Payroll</option>
+                            <option value="labor_force_part">Labor Force Participation</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right AI Panel -->
+            <div class="ai-panel">
+                <div class="ai-header">
+                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #0071e3, #00b36b); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">AI</div>
+                    <h3>AI Economic Agent</h3>
+                </div>
+                
+                <div class="chat-window" id="chat-window">
+                    <div class="chat-msg chat-ai">
+                        Hello. Ask me anything about the US economy.<br><br>
+                        The chart will highlight the key insight automatically.
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Ask about unemployment, GDP..." 
+                           onkeydown="if(event.keyCode===13) sendMessage()">
+                    <button onclick="sendMessage()">↑</button>
+                </div>
+                
+                <div style="text-align:center; margin-top:16px; font-size:13px; color:#6e6e73;">
+                    Powered by Groq • LangChain • Snowflake
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        Preview only • Save as <strong>dashboard.html</strong> and open in any browser • Fully interactive
+    </div>
+
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.28.0.min.js"></script>
+    <script>
+        // Sample data (replace with real data later)
+        let data = {
+            date: Array.from({length: 120}, (_, i) => new Date(2015, i%12, 1).toISOString().slice(0,7)),
+            unemployment: Array.from({length: 120}, () => 3.5 + Math.random()*3),
+            gdp: Array.from({length: 120}, (_,i) => 18000 + i*130),
+            inflation_cpi: Array.from({length: 120}, () => 2 + Math.random()*3),
+            federal_funds_rate: Array.from({length: 120}, () => 1 + Math.random()*4),
+            housing_starts: Array.from({length: 120}, () => 1100 + Math.random()*500),
+            avg_hourly_wage: Array.from({length: 120}, (_,i) => 25 + i*0.4),
+            nonfarm_payroll: Array.from({length: 120}, (_,i) => 140000 + i*900),
+            labor_force_part: Array.from({length: 120}, () => 62 + Math.random()*2.5)
+        };
+
+        const stateLocations = ["CA","TX","NY","FL","IL","PA","OH","GA","NC","MI","NJ","VA","WA","AZ","MA","TN","IN","MO","MD","WI","CO","MN","SC","AL","LA","KY","OR","OK","CT","UT","IA","NV","AR","MS","KS","NM","NE","ID","WV","HI","NH","ME","MT","RI","DE","SD","ND","AK","VT","WY"];
+        const stateUnemp = [4.8,4.1,4.3,3.9,4.7,4.0,4.2,3.8,3.7,4.5,4.4,3.6,4.6,4.0,3.5,3.9,3.8,3.7,3.4,3.6,3.9,3.5,3.8,3.6,4.3,4.1,4.2,3.7,3.9,3.2,3.4,5.1,3.5,4.0,3.3,4.4,3.1,3.9,4.8,3.2,2.9,3.5,3.8,3.6,3.4,2.8,2.7,4.9,2.6,3.0];
+
+        function buildLineChart(indicator) {
+            const trace = {
+                x: data.date,
+                y: data[indicator],
+                mode: 'lines',
+                line: { color: '#0071e3', width: 3.5, shape: 'spline' },
+                name: indicator.replace('_', ' ').toUpperCase()
+            };
+
+            const layout = {
+                height: 420,
+                plot_bgcolor: '#ffffff',
+                paper_bgcolor: '#ffffff',
+                margin: { l: 50, r: 30, t: 20, b: 60 },
+                xaxis: { showgrid: true, gridcolor: '#f0f0f0', tickfont: { size: 13 } },
+                yaxis: { showgrid: true, gridcolor: '#f0f0f0', tickfont: { size: 13 } },
+                font: { family: '-apple-system', color: '#1d1d1f' }
+            };
+
+            Plotly.newPlot('main-chart', [trace], layout, {displayModeBar: false});
+        }
+
+        function buildChoropleth() {
+            const trace = {
+                type: "choropleth",
+                locationmode: "USA-states",
+                locations: stateLocations,
+                z: stateUnemp,
+                colorscale: [
+                    [0, '#e3f0ff'],
+                    [0.5, '#0071e3'],
+                    [1, '#003d80']
+                ],
+                colorbar: { title: { text: "Unemployment %", side: "right" } }
+            };
+
+            const layout = {
+                geo: { scope: "usa", showlakes: true, lakecolor: "#f5f5f7" },
+                height: 460,
+                margin: { t: 0, b: 0, l: 0, r: 0 },
+                paper_bgcolor: 'transparent'
+            };
+
+            Plotly.newPlot('choropleth-map', [trace], layout, {displayModeBar: false});
+        }
+
+        function switchTab(n) {
+            document.getElementById('panel-trends').style.display = n === 0 ? 'block' : 'none';
+            document.getElementById('panel-map').style.display = n === 1 ? 'block' : 'none';
+            
+            document.querySelectorAll('.tab').forEach((t, i) => {
+                t.classList.toggle('active', i === n);
+            });
+        }
+
+        function updateChart() {
+            const val = document.getElementById('indicator-select').value;
+            const titleEl = document.getElementById('chart-title');
+            titleEl.textContent = val.replace('_', ' ').toUpperCase() + ' • 2015–2024';
+            buildLineChart(val);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            if (!input.value.trim()) return;
+
+            const chatWindow = document.getElementById('chat-window');
+            
+            // User message
+            const userDiv = document.createElement('div');
+            userDiv.className = 'chat-msg chat-user';
+            userDiv.textContent = input.value;
+            chatWindow.appendChild(userDiv);
+
+            const question = input.value;
+            input.value = '';
+
+            // Fake AI reply
+            setTimeout(() => {
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'chat-msg chat-ai';
+                aiDiv.innerHTML = `Great question! The <strong>${question.toLowerCase().includes('unemployment') ? 'unemployment rate' : 'indicator'}</strong> moved sharply in 2020. I’ve highlighted the relevant period on the chart.`;
+                chatWindow.appendChild(aiDiv);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+                
+                // Auto-switch to trends and update chart
+                if (question.toLowerCase().includes('unemployment')) {
+                    document.getElementById('indicator-select').value = 'unemployment';
+                    updateChart();
+                    switchTab(0);
+                }
+            }, 1100);
+
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Initialize
+        window.onload = () => {
+            buildLineChart('unemployment');
+            buildChoropleth();
+            console.log('%c✅ Premium Apple-style dashboard loaded', 'color:#0071e3; font-size:14px;');
+        };
+    </script>
+</body>
+</html>
